@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import '../quiz_result_page.dart'; // Import the quiz result page
 
-class KelasSayaTab extends StatelessWidget {
+class KelasSayaTab extends StatefulWidget {
   const KelasSayaTab({super.key});
 
-  final List<Map<String, dynamic>> materiList = const [
+  @override
+  State<KelasSayaTab> createState() => _KelasSayaTabState();
+}
+
+class _KelasSayaTabState extends State<KelasSayaTab> {
+  final List<Map<String, dynamic>> materiList = [
     {
       "pertemuan": "Pertemuan 1",
       "judul": "01 - Pengantar User Interface Design",
@@ -42,7 +48,7 @@ class KelasSayaTab extends StatelessWidget {
     },
   ];
 
-  final List<Map<String, dynamic>> taskList = const [
+  final List<Map<String, dynamic>> taskList = [
     {
       "label": "Quiz",
       "labelColor": Colors.blue,
@@ -66,6 +72,16 @@ class KelasSayaTab extends StatelessWidget {
     },
   ];
 
+  // State for checkboxes in materi list
+  late List<bool> _materiCheckboxStates;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize checkbox states based on the materi items
+    _materiCheckboxStates = materiList.map((item) => item["selesai"] as bool).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -74,6 +90,12 @@ class KelasSayaTab extends StatelessWidget {
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
           backgroundColor: Colors.red,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           title: const Text(
             'DESAIN ANTARMUKA & PENGALAMAN\nPENGGUNA D4SM-4205 (3 Days)',
             style: TextStyle(fontSize: 14),
@@ -103,6 +125,24 @@ class KelasSayaTab extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
+                    const Text(
+                      'Konsep dasar User Interface Design akan dipelajari bagaimana '
+                      'membangun sebuah Interaction Design pada antarmuka. '
+                      'Interaction ini sangat penting untuk aplikasi berkomunikasi '
+                      'dengan pengguna.',
+                      style: TextStyle(fontSize: 13),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Tabs
+                    Row(
+                      children: [
+                        _tab('Lampiran Materi', false),
+                        _tab('Tugas dan Kuis', true),
+                      ],
+                    ),
+
                     const SizedBox(height: 20),
 
                     // Quiz Card (Expanded)
@@ -145,7 +185,13 @@ class KelasSayaTab extends StatelessWidget {
             pertemuan: materi['pertemuan'],
             judul: materi['judul'],
             durasi: materi['durasi'],
-            selesai: materi['selesai'],
+            selesai: _materiCheckboxStates[index],
+            onCheckChanged: (bool? value) {
+              setState(() {
+                _materiCheckboxStates[index] = value ?? false;
+                materiList[index]["selesai"] = value ?? false;
+              });
+            },
           ),
         );
       },
@@ -174,46 +220,57 @@ class KelasSayaTab extends StatelessWidget {
     );
   }
 
-  // Quiz Card
+  // Quiz Card - now tappable to navigate to quiz page
   Widget _quizCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
+    return GestureDetector(
+      onTap: () {
+        // Navigate to the quiz page when the quiz card is tapped
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QuizResultPage(), // Navigate to quiz result page
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: const [
-              Icon(Icons.quiz_outlined),
-              SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  'Quiz Review 01',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: const [
+                Icon(Icons.quiz_outlined),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Quiz Review 01',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
-              ),
-              Icon(Icons.check_circle, color: Colors.green),
-            ],
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            'Silahkan kerjakan kuis ini dalam waktu 15 menit sebagai nilai '
-            'pertama komponen kuis. Jangan lupa klik tombol Submit Answer '
-            'setelah menjawab seluruh pertanyaan.\n\n'
-            'Kerjakan sebelum hari Jumat, 26 Februari 2021 jam 23:59 WIB.',
-            style: TextStyle(fontSize: 13),
-          ),
-        ],
+                Icon(Icons.check_circle, color: Colors.green),
+              ],
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Silahkan kerjakan kuis ini dalam waktu 15 menit sebagai nilai '
+              'pertama komponen kuis. Jangan lupa klik tombol Submit Answer '
+              'setelah menjawab seluruh pertanyaan.\n\n'
+              'Kerjakan sebelum hari Jumat, 26 Februari 2021 jam 23:59 WIB.',
+              style: TextStyle(fontSize: 13),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -263,6 +320,7 @@ class MateriCard extends StatelessWidget {
   final String judul;
   final String durasi;
   final bool selesai;
+  final Function(bool?)? onCheckChanged;
 
   const MateriCard({
     super.key,
@@ -270,6 +328,7 @@ class MateriCard extends StatelessWidget {
     required this.judul,
     required this.durasi,
     required this.selesai,
+    this.onCheckChanged,
   });
 
   @override
@@ -322,11 +381,12 @@ class MateriCard extends StatelessWidget {
                 ],
               ),
             ),
-            if (selesai)
-              const Icon(
-                Icons.check_circle,
-                color: Colors.green,
-              ),
+            Checkbox(
+              value: selesai,
+              onChanged: onCheckChanged,
+              activeColor: Colors.green,
+              checkColor: Colors.white,
+            ),
           ],
         ),
       ),
@@ -507,6 +567,14 @@ class _MateriDetailPageState extends State<MateriDetailPage> {
                   ),
 
                   const SizedBox(height: 20),
+
+                  // Tab Menu
+                  Row(
+                    children: [
+                      _buildTab('Lampiran Materi', true),
+                      _buildTab('Tugas dan Kuis', false),
+                    ],
+                  ),
 
                   const SizedBox(height: 16),
 
