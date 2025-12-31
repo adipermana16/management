@@ -3,192 +3,385 @@ import 'package:flutter/material.dart';
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
+ @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(20.0),
+      children: const [
+        _SectionHeader(title: 'Jadwal Masuk'),
+        SizedBox(height: 10),
+        _IncomingCourseCard(),
+        SizedBox(height: 20),
+        _SectionHeader(title: 'Pengumuman'),
+        SizedBox(height: 10),
+        _AnnouncementCard(),
+        SizedBox(height: 20),
+        _SectionHeader(title: 'Mata Kuliah Terakhir'),
+        SizedBox(height: 10),
+        _RecentCourseList(),
+      ],
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+
+  const _SectionHeader({required this.title});
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textPrimary,
+      ),
+    );
+  }
+}
+
+class _IncomingCourseCard extends StatelessWidget {
+  const _IncomingCourseCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: AppColors.primary,
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Upcoming Tasks Section
             const Text(
-              'Tugas yang Akan Datang',
+              'Mobile Programming',
               style: TextStyle(
-                fontSize: 20,
+                color: Colors.white,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 8),
             Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(10),
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: Icon(Icons.assignment, color: Color(0xFFEA6262)),
-                      title: Text('Tugas Matematika'),
-                      subtitle: Text('Deadline: 20 Des 2023'),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.assignment, color: Color(0xFFEA6262)),
-                      title: Text('Tugas Bahasa Inggris'),
-                      subtitle: Text('Deadline: 22 Des 2023'),
-                    ),
-                  ],
-                ),
+              child: const Text(
+                '09:30',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 30),
-            
-            // Latest Announcements Section
+            const SizedBox(height: 8),
+            const Text(
+              'Ruang 404 - Lab Komputer',
+              style: TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+            const SizedBox(height: 16),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Pengumuman Terakhir',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                const CircleAvatar(
+                  radius: 12,
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.person, size: 16, color: AppColors.primary),
                 ),
-                TextButton(
-                  onPressed: () {
-                    // Navigate to all announcements
-                  },
-                  child: const Text('Lihat Semua'),
+                const SizedBox(width: 8),
+                const Text(
+                  'Pak John Doe',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ],
             ),
-            const SizedBox(height: 15),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AnnouncementCard extends StatelessWidget {
+  const _AnnouncementCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      surfaceTintColor: Colors.white,
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
             Container(
-              height: 150,
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(10),
+                color: AppColors.secondary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Icon(
-                        Icons.campaign,
-                        size: 60,
-                        color: Color(0xFFEA6262),
-                      ),
+              child: const Icon(Icons.notifications_active, color: AppColors.secondary),
+            ),
+            const SizedBox(width: 16),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Jadwal UTS',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: AppColors.textPrimary,
                     ),
-                    SizedBox(width: 15),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Maintenance UAS',
-                            style: TextStyle(
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Cek jadwalmu sekarang!',
+                    style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _RecentCourseList extends StatelessWidget {
+  const _RecentCourseList();
+
+  @override
+  Widget build(BuildContext context) {
+    final courses = [
+      {'title': 'Struktur Data', 'progress': 0.75, 'color': Colors.blue},
+      {'title': 'Pemrograman Web', 'progress': 0.45, 'color': Colors.orange},
+      {'title': 'Algoritma', 'progress': 0.90, 'color': Colors.purple},
+    ];
+
+    return Column(
+      children: courses.map((course) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12.0),
+          child: CourseCard(
+            title: course['title'] as String,
+            progress: course['progress'] as double,
+            iconColor: course['color'] as Color,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CourseDetailScreen(
+                    title: course['title'] as String,
+                    progress: course['progress'] as double,
+                    iconColor: course['color'] as Color,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+
+// Define AppColors class
+class AppColors {
+  static const Color primary = Color(0xFFEA6262);
+  static const Color secondary = Color(0xFFEA6262);
+  static const Color textPrimary = Colors.black87;
+  static const Color textSecondary = Colors.grey;
+}
+
+// CourseCard widget
+class CourseCard extends StatelessWidget {
+  final String title;
+  final double progress;
+  final Color iconColor;
+  final VoidCallback? onTap;
+
+  const CourseCard({
+    super.key,
+    required this.title,
+    required this.progress,
+    required this.iconColor,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: ListTile(
+        leading: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            Icons.book,
+            color: iconColor,
+            size: 20,
+          ),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 4),
+            Text(
+              '${(progress * 100).toInt()}% Selesai',
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 4),
+            LinearProgressIndicator(
+              value: progress,
+              backgroundColor: Colors.grey[300],
+              valueColor: AlwaysStoppedAnimation<Color>(iconColor),
+            ),
+          ],
+        ),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: onTap,
+      ),
+    );
+  }
+}
+
+// CourseDetailScreen widget
+class CourseDetailScreen extends StatelessWidget {
+  final String title;
+  final double progress;
+  final Color iconColor;
+
+  const CourseDetailScreen({
+    super.key,
+    required this.title,
+    required this.progress,
+    required this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+        backgroundColor: iconColor,
+        foregroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
+              elevation: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: iconColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.book,
+                            color: iconColor,
+                            size: 24,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Sistem akan maintenance pada tanggal 25 Desember 2023 dari pukul 22:00 hingga 06:00 WIB',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Progress: ${(progress * 100).toInt()}%',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
                       ),
+                    ),
+                    const SizedBox(height: 8),
+                    LinearProgressIndicator(
+                      value: progress,
+                      backgroundColor: Colors.grey[300],
+                      valueColor: AlwaysStoppedAnimation<Color>(iconColor),
                     ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 30),
-            
-            // Class Progress Section
+            const SizedBox(height: 20),
             const Text(
-              'Progres Kelas',
+              'Materi',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 15),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    // Sub-group 1: Matematika
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Color(0xFFEA6262),
-                        child: Icon(Icons.school, color: Colors.white),
+            const SizedBox(height: 12),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    child: ListTile(
+                      leading: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: iconColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          Icons.video_library,
+                          color: iconColor,
+                        ),
                       ),
-                      title: Text('Matematika Dasar'),
-                      subtitle: Text('Progress: 75%'),
-                      trailing: Text('75%'),
+                      title: Text('Materi $index: Judul Materi'),
+                      subtitle: const Text('05:30 menit'),
+                      trailing: const Icon(Icons.play_circle, color: Colors.grey),
                     ),
-                    SizedBox(height: 10),
-                    LinearProgressIndicator(
-                      value: 0.75,
-                      backgroundColor: Colors.grey,
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFEA6262)),
-                    ),
-                    SizedBox(height: 20),
-                    
-                    // Sub-group 2: Bahasa Inggris
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Color(0xFFEA6262),
-                        child: Icon(Icons.language, color: Colors.white),
-                      ),
-                      title: Text('Bahasa Inggris'),
-                      subtitle: Text('Progress: 60%'),
-                      trailing: Text('60%'),
-                    ),
-                    SizedBox(height: 10),
-                    LinearProgressIndicator(
-                      value: 0.60,
-                      backgroundColor: Colors.grey,
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFEA6262)),
-                    ),
-                    SizedBox(height: 20),
-                    
-                    // Sub-group 3: Pemrograman
-                    ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Color(0xFFEA6262),
-                        child: Icon(Icons.code, color: Colors.white),
-                      ),
-                      title: Text('Pemrograman'),
-                      subtitle: Text('Progress: 85%'),
-                      trailing: Text('85%'),
-                    ),
-                    SizedBox(height: 10),
-                    LinearProgressIndicator(
-                      value: 0.85,
-                      backgroundColor: Colors.grey,
-                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFEA6262)),
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             ),
-            const SizedBox(height: 20), // Add some padding at the bottom
           ],
         ),
       ),

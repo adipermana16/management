@@ -136,13 +136,7 @@ class _KelasSayaTabState extends State<KelasSayaTab> {
                     const SizedBox(height: 20),
 
                     // Tabs
-                    Row(
-                      children: [
-                        _tab('Lampiran Materi', false),
-                        _tab('Tugas dan Kuis', true),
-                      ],
-                    ),
-
+                
                     const SizedBox(height: 20),
 
                     // Quiz Card (Expanded)
